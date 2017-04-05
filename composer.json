@@ -1,5 +1,5 @@
 {
-    "name": "adamb7586/afd",
+    "name": "adamb/afd",
     "description": "A PHP Wrapper to retrieve the information given by the AFD Postcode Evolution software (http://www.afd.co.uk)",
     "keywords": ["AFD", "Postcode Evolution", "AFD Addressing", "wrapper"],
     "type": "library",
