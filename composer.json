@@ -1,0 +1,19 @@
+{
+    "name": "adamb7586/afd",
+    "description": "A PHP Wrapper to retrieve the information given by the AFD Postcode Evolution software (http://www.afd.co.uk)",
+    "keywords": ["AFD", "Postcode Evolution", "AFD Addressing", "wrapper"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adam Binnersley",
+            "email": "abinnersley@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "AFD\\": "src/"
+        }
+    }
+}
