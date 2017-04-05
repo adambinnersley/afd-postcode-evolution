@@ -1,2 +1,2 @@
-# afd-postcode-evolution
-A PHP Wrapper to retrive the information given by the AFD Postcode Evolution software (http://www.afd.co.uk)
+# AFD Postcode Evolution PHP Wrapper
+A PHP Wrapper to retrieve the information given by the AFD Postcode Evolution software (http://www.afd.co.uk)
