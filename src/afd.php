@@ -21,6 +21,10 @@ class AFD{
         return $this;
     }
     
+    /**
+     * Gets he host where the AFD Postcode Evolution is installed
+     * @return string
+     */
     public function getHost(){
         return self::$AFD_HOST;
     }
@@ -37,6 +41,10 @@ class AFD{
         return $this;
     }
     
+    /**
+     * Gets the port number to look for the AFD Postcode data
+     * @return int
+     */
     public function getPort(){
         return self::$AFD_PORT;
     }
