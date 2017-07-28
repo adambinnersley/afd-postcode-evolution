@@ -1,5 +1,4 @@
 <?php
-
 namespace AFD\Tests;
 
 use AFD\AFD;
@@ -15,5 +14,9 @@ class AFDTest extends TestCase{
     
     public function tearDown(){
         $this->afd = null;
+    }
+    
+    public function testSetHost(){
+        $this->assertObjectHasAttribute('address1', $this->afd->setHost('https://ldctestadam.co.uk'));
     }
 }
