@@ -6,8 +6,8 @@
 namespace AFD;
 
 class AFD{
-    private static $AFD_HOST = 'http://localhost';
-    private static $AFD_PORT = 81;
+    protected static $AFD_HOST = 'http://localhost';
+    protected static $AFD_PORT = 81;
 
     public $address1, $address2, $address3, $town, $county, $latitude, $longitude;
     
@@ -16,8 +16,13 @@ class AFD{
      * @param string $host This should be a valid URL
      * @return void
      */
-    public function setAFDHost($host){
+    public function setHost($host){
         self::$AFD_HOST = $host;
+        return $this;
+    }
+    
+    public function getHost(){
+        return self::$AFD_HOST;
     }
     
     /**
@@ -25,10 +30,15 @@ class AFD{
      * @param int $port This should be the Port number that the Postcode evolution is installed on
      * @return void
      */
-    public function setAFDPort($port){
+    public function setPort($port){
         if(is_numeric($port)){
             self::$AFD_PORT = $port;
         }
+        return $this;
+    }
+    
+    public function getPort(){
+        return self::$AFD_PORT;
     }
     
     /**
