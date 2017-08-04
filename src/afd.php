@@ -5,6 +5,8 @@
  */
 namespace AFD;
 
+use GuzzleHttp\Client;
+
 class AFD{
     protected static $AFD_HOST = 'http://localhost';
     protected static $AFD_PORT = 81;
@@ -56,7 +58,7 @@ class AFD{
      */
     public function findAddresses($postcode){
         if($this->programActive()){
-            $xml = $this->get_data(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslist.pce?postcode='.$postcode);
+            $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslist.pce?postcode='.$postcode);
             if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
                 for($i = 0; $i < count($xml->AddressListItem); $i++){
                     $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->AddressListItem[$i]->Address));
@@ -75,7 +77,7 @@ class AFD{
      */
     public function postcodeDetails($postcode){
         if($this->programActive()){
-            $xml = $this->get_data(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslookup.pce?postcode='.$postcode);
+            $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslookup.pce?postcode='.$postcode);
             if($xml->Address->Postcode != 'Error: Postcode Not Found'){
                 $details['lat'] = $xml->Address->Latitude;
                 $details['lng'] = $xml->Address->Longitude;
@@ -92,7 +94,7 @@ class AFD{
      */
     public function setAddress($key){
         if($this->programActive()){
-            $xml = $this->get_data(self::$AFD_HOST.':'.self::$AFD_PORT.'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.$key);
+            $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.$key);
             if($xml->Result == 1){
                 $organisation = (string)$xml->Item->Organisation;
                 $property = (string)$xml->Item->Property;
@@ -149,7 +151,7 @@ class AFD{
      * @return boolean Returns true if program active else returns false
      */
     public function programActive(){
-        $statusxml = $this->get_data(self::$AFD_HOST.':'.self::$AFD_PORT.'/status.pce');
+        $statusxml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/status.pce');
         return $statusxml->PCEStatus == 'OK' ? true : false;
     }
     
@@ -158,16 +160,9 @@ class AFD{
      * @param string $url This should be the URL with the given information
      * @return array Returns the results from the URL given in an array format  
      */
-    private function get_data($url){
-        $ch = curl_init();
-        $timeout = 5;
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $data = curl_exec($ch);
-        $xmlobj = simplexml_load_string($data);
-        curl_close($ch);
-        return $xmlobj;
+    private function getData($url){
+        $client = new Client();
+        $response = $client->request('GET', $url);
+        return simplexml_load_string($response->getBody());
     }
 }
