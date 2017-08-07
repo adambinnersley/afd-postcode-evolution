@@ -60,7 +60,9 @@ class AFD{
         if($this->programActive()){
             $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslist.pce?postcode='.$postcode);
             if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
-                for($i = 0; $i < count($xml->AddressListItem); $i++){
+                $addresses = array();
+                $count = count($xml->AddressListItem);
+                for($i = 0; $i < $count; $i++){
                     $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->AddressListItem[$i]->Address));
                     $addresses[$i]['key'] = (string)$xml->AddressListItem[$i]->PostKey;
                 }
