@@ -11,7 +11,13 @@ class AFD{
     protected static $AFD_HOST = 'http://localhost';
     protected static $AFD_PORT = 81;
 
-    public $address1, $address2, $address3, $town, $county, $latitude, $longitude;
+    public $address1;
+    public $address2;
+    public $address3;
+    public $town;
+    public $county;
+    public $latitude;
+    public $longitude;
     
     /**
      * Sets the host where the AFD Postcode Evolution is installed
