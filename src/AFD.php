@@ -37,7 +37,7 @@ class AFD{
      * @return void
      */
     public function setPort($port){
-        if(is_numeric($port)){
+        if(is_int($port)){
             self::$AFD_PORT = $port;
         }
         return $this;
@@ -81,6 +81,7 @@ class AFD{
         if($this->programActive()){
             $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslookup.pce?postcode='.$postcode);
             if($xml->Address->Postcode != 'Error: Postcode Not Found'){
+                $details = array();
                 $details['lat'] = $xml->Address->Latitude;
                 $details['lng'] = $xml->Address->Longitude;
                 return $details;
