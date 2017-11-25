@@ -24,7 +24,8 @@ Example of usage can be found below:
 <?php
 
 $afd = new AFD\AFD();
-$afd->setHost('http://127.0.0.1')->setPort(81); // Default port is 81 and no need to call setPort() method unless running as another port number
+// Default port is 81 and no need to call setPort() method unless running as another port number
+$afd->setHost('http://127.0.0.1')->setPort(81);
 $afd->programActive();
 // Will return true of false dependant on if connection can be made to the AFD Postcode Evolution software
 
@@ -88,29 +89,9 @@ print_r($details);
 // Returns
 Array
 (
-    [Organisation] => SimpleXMLElement Object
-        (
-        )
-
-    [Property] => SimpleXMLElement Object
-        (
-        )
-
     [Street] => Newland
-    [Locality] => SimpleXMLElement Object
-        (
-        )
-
     [Town] => Lincoln
-    [County] => SimpleXMLElement Object
-        (
-        )
-
     [Postcode] => LN1 1YA
-    [DPS] => SimpleXMLElement Object
-        (
-        )
-
     [Mailsort] => 33749
     [PostcodeType] => Small User
     [HouseholdCount] => 1
@@ -146,9 +127,6 @@ Array
     [UrbanRuralName] => Urban City and Town
     [LEACode] => 925
     [LEAName] => Lincolnshire
-    [UDPRN] => SimpleXMLElement Object
-        (
-        )
 
 )
 
