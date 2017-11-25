@@ -1,6 +1,6 @@
 <?php
 /**
- * The AFD class is made to be used with the AFD Postcode Evolution program to get the users postcode information
+ * The AFD class is made to be used with the AFD Postcode Evolution Server program to get the users postcode information
  * @author Adam Binnersley <abinnersley@gmail.com>
  */
 namespace AFD;
