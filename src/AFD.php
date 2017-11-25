@@ -87,10 +87,7 @@ class AFD{
         if($this->programActive()){
             $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
             if($xml->Address->Postcode != 'Error: Postcode Not Found'){
-                $details = array();
-                $details['lat'] = $xml->Address->Latitude;
-                $details['lng'] = $xml->Address->Longitude;
-                return $details;
+                return get_object_vars($xml->Address);
             }
         }
         return false;
