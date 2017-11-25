@@ -65,9 +65,91 @@ Array (
     [18] => Array ( [address] => Flat 21, Brayford Quay, Newland, Lincoln [key] => LN1 1YA1019~20161213 )
     [19] => Array ( [address] => Flat 22, Brayford Quay, Newland, Lincoln [key] => LN1 1YA1020~20161213 )
     [20] => Array ( [address] => Flat 23, Brayford Quay, Newland, Lincoln [key] => LN1 1YA1021~20161213 )
-    ..........etc
+    ...
+    ...
+    ...
+    etc, etc, etc
     [69] => Array ( [address] => Jobcentre Plus, Viking House, 98 Newland, Lincoln [key] => LN1 1YA1070~20161213 )
     [70] => Array ( [address] => Pyne & Co, 100 Newland, Lincoln [key] => LN1 1YA1071~20161213 ) ) 
 
 ```
 
+### 3. Find postcode area details
+```php
+
+$postcode = 'LN1 1YA';
+
+$afd = new AFD\AFD();
+$afd->setHost('http://myhost.co.uk');
+$details = $afd->postcodeDetails($postcode);
+
+print_r($details);
+
+// Returns
+Array
+(
+    [Organisation] => SimpleXMLElement Object
+        (
+        )
+
+    [Property] => SimpleXMLElement Object
+        (
+        )
+
+    [Street] => Newland
+    [Locality] => SimpleXMLElement Object
+        (
+        )
+
+    [Town] => Lincoln
+    [County] => SimpleXMLElement Object
+        (
+        )
+
+    [Postcode] => LN1 1YA
+    [DPS] => SimpleXMLElement Object
+        (
+        )
+
+    [Mailsort] => 33749
+    [PostcodeType] => Small User
+    [HouseholdCount] => 1
+    [AuthorityCode] => E07000138
+    [Authority] => Lincoln
+    [Constituency] => Lincoln
+    [TVRegion] => Yorkshire
+    [GridEast] => 49719
+    [GridNorth] => 37125
+    [Latitude] => 53.2295
+    [Longitude] => -0.5454
+    [STDCode] => 01522
+    [WardCode] => E05010787
+    [WardName] => Carholme
+    [NHSCode] => Q33
+    [NHSName] => East Midlands
+    [NHSRegion] => Midlands and Eastern
+    [NHSRegionCode] => Y22
+    [Changed] => False
+    [CensusCode] => BY12
+    [Affluence] => Prosperous
+    [LifeStage] => Empty nests and seniors
+    [AdditionalCensusInfo] => Established focus on buying home, DIY, home improvements and the garden
+    [Occupancy] => 5
+    [OccupancyDescription] => Mostly Residential
+    [AddressType] => 3
+    [AddressTypeDescription] => Numbered and Named, Likelihood of Multiple Occupancy
+    [PCTCode] => E38000100
+    [PCTName] => Lincolnshire West
+    [EERCode] => E15000004
+    [EERName] => East Midlands
+    [UrbanRuralCode] => C1
+    [UrbanRuralName] => Urban City and Town
+    [LEACode] => 925
+    [LEAName] => Lincolnshire
+    [UDPRN] => SimpleXMLElement Object
+        (
+        )
+
+)
+
+```
