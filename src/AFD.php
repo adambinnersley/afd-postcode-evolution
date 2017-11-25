@@ -64,7 +64,7 @@ class AFD{
      */
     public function findAddresses($postcode){
         if($this->programActive()){
-            $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslist.pce?postcode='.$postcode);
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslist.pce?postcode='.urlencode($postcode));
             if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
                 $addresses = array();
                 $count = count($xml->AddressListItem);
@@ -85,7 +85,7 @@ class AFD{
      */
     public function postcodeDetails($postcode){
         if($this->programActive()){
-            $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/addresslookup.pce?postcode='.$postcode);
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
             if($xml->Address->Postcode != 'Error: Postcode Not Found'){
                 $details = array();
                 $details['lat'] = $xml->Address->Latitude;
@@ -103,7 +103,7 @@ class AFD{
      */
     public function setAddress($key){
         if($this->programActive()){
-            $xml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.$key);
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
             if($xml->Result == 1){
                 $organisation = (string)$xml->Item->Organisation;
                 $property = (string)$xml->Item->Property;
@@ -160,7 +160,7 @@ class AFD{
      * @return boolean Returns true if program active else returns false
      */
     public function programActive(){
-        $statusxml = $this->getData(self::$AFD_HOST.':'.self::$AFD_PORT.'/status.pce');
+        $statusxml = $this->getData($this->getHost().':'.$this->getPort().'/status.pce');
         return $statusxml->PCEStatus == 'OK' ? true : false;
     }
     
