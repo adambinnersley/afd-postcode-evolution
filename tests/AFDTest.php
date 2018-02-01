@@ -79,7 +79,7 @@ class AFDTest extends TestCase{
         $this->assertContains('address', $address);
         $noneExistingAddress = $this->afd->findAddresses('LN86W 1YA');
         $this->assertArrayNotHasKey(0, $noneExistingAddress);
-        $this->assertNotContain('address', $noneExistingAddress);
+        $this->assertNotContains('address', $noneExistingAddress);
     }
     
     /**
@@ -89,7 +89,7 @@ class AFDTest extends TestCase{
      * @covers AFD\AFD::getPort
      */
     public function testGetPostcodeDetails() {
-        $address = $this->afd->getPostcodeDetails('LN1 1YA');
+        $address = $this->afd->postcodeDetails('LN1 1YA');
         $this->assertArrayHasKey('Street', $address);
         $this->assertArrayHasKey('Town', $address);
         $this->assertContains('Lincoln', $address);
