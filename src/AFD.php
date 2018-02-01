@@ -6,6 +6,10 @@
 namespace AFD;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ConnectException;
+
+error_reporting(0);
 
 class AFD{
     protected static $AFD_HOST = 'http://localhost';
@@ -43,7 +47,7 @@ class AFD{
      * @return void
      */
     public function setPort($port){
-        if(is_int($port)){
+        if(is_int($port) && $port >= 1){
             self::$AFD_PORT = $port;
         }
         return $this;
@@ -167,8 +171,15 @@ class AFD{
      * @return array Returns the results from the URL given in an array format  
      */
     private function getData($url){
-        $client = new Client();
-        $response = $client->request('GET', $url);
-        return simplexml_load_string($response->getBody());
+        $client = new Client(['timeout'  => 2.0]);
+        try{
+            $response = $client->request('GET', $url);
+            if($response->getStatusCode() === 200){
+                return simplexml_load_string($response->getBody());
+            }
+        } catch (ConnectException $e) {
+            echo($e->getMessage());
+        }
+        return false;
     }
 }
