@@ -3,7 +3,7 @@ A PHP Wrapper to retrieve the information given by the AFD Postcode Evolution Se
 
 ## Installation
 
-Installation is available via [Composer/Packagist](https://packagist.org/packages/adamb/database), you can add the following line to your `composer.json` file:
+Installation is available via [Composer/Packagist](https://packagist.org/packages/adamb/afd), you can add the following line to your `composer.json` file:
 
 ```json
 "adamb/afd": "^1.0"
