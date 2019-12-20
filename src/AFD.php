@@ -67,15 +67,17 @@ class AFD{
      * @return array|boolean Returns a list of the addresses or returns false if program is not active
      */
     public function findAddresses($postcode){
-        $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslist.pce?postcode='.urlencode($postcode));
-        if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
-            $addresses = array();
-            $count = count($xml->AddressListItem);
-            for($i = 0; $i < $count; $i++){
-                $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->AddressListItem[$i]->Address));
-                $addresses[$i]['key'] = (string)$xml->AddressListItem[$i]->PostKey;
+        if($this->programActive()){
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslist.pce?postcode='.urlencode($postcode));
+            if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
+                $addresses = array();
+                $count = count($xml->AddressListItem);
+                for($i = 0; $i < $count; $i++){
+                    $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->AddressListItem[$i]->Address));
+                    $addresses[$i]['key'] = (string)$xml->AddressListItem[$i]->PostKey;
+                }
+                return $addresses;
             }
-            return $addresses;
         }
         return false;
     }
@@ -86,9 +88,11 @@ class AFD{
      * @return array|boolean Returns array if information exist else returns false
      */
     public function postcodeDetails($postcode){
-        $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
-        if($xml->Address->Postcode != 'Error: Postcode Not Found'){
-            return array_filter(get_object_vars($xml->Address));
+        if($this->programActive()){
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
+            if($xml->Address->Postcode != 'Error: Postcode Not Found'){
+                return array_filter(get_object_vars($xml->Address));
+            }
         }
         return false;
     }
@@ -99,31 +103,33 @@ class AFD{
      * @return array|boolean Returns and array if key and address info exist else returns false
      */
     public function setAddress($key){
-        $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
-        if($xml->Result == 1){
-            $organisation = (string)$xml->Item->Organisation;
-            $property = (string)$xml->Item->Property;
-            $street = (string)$xml->Item->Street;
-            $locality = (string)$xml->Item->Locality;
-            $town = (string)$xml->Item->Town;
-            $county = (string)$xml->Item->PostalCounty;
-            $this->latitude = (string)$xml->Item->Latitude;
-            $this->longitude = (string)$xml->Item->Longitude;
-
-            if($organisation){
-                $this->address1 = $organisation.', '.$property;
-                $this->address2 = $street;
-                $this->address3 = $locality;
+        if($this->programActive()){
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
+            if($xml->Result == 1){
+                $organisation = (string)$xml->Item->Organisation;
+                $property = (string)$xml->Item->Property;
+                $street = (string)$xml->Item->Street;
+                $locality = (string)$xml->Item->Locality;
+                $town = (string)$xml->Item->Town;
+                $county = (string)$xml->Item->PostalCounty;
+                $this->latitude = (string)$xml->Item->Latitude;
+                $this->longitude = (string)$xml->Item->Longitude;
+                
+                if($organisation){
+                    $this->address1 = $organisation.', '.$property;
+                    $this->address2 = $street;
+                    $this->address3 = $locality;
+                }
+                else{
+                    if(strlen($property) >= 3){$this->address1 = $property.', '.$street;}
+                    else{$this->address1 = $street;}
+                    $this->address2 = $locality;
+                    $this->address3 = '';
+                }
+                $this->town = $town;
+                $this->county = $county;
+                return true;
             }
-            else{
-                if(strlen($property) >= 3){$this->address1 = $property.', '.$street;}
-                else{$this->address1 = $street;}
-                $this->address2 = $locality;
-                $this->address3 = '';
-            }
-            $this->town = $town;
-            $this->county = $county;
-            return true;
         }
         return false;
     }
@@ -167,7 +173,7 @@ class AFD{
     private function getData($url){
         $client = new Client(['timeout'  => 2.0]);
         try{
-            $response = $client->request('GET', $url);
+            $response = $client->request('GET', $url, ['headers' => ['Accept' => 'application/xml']]);
             if($response->getStatusCode() === 200){
                 return simplexml_load_string($response->getBody());
             }
