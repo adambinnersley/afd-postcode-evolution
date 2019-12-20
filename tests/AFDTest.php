@@ -8,11 +8,11 @@ class AFDTest extends TestCase{
     
     public $afd;
     
-    public function setUp() {
+    public function setUp(): void {
         $this->afd = new AFD();
     }
     
-    public function tearDown() {
+    public function tearDown(): void {
         $this->afd = null;
     }
     

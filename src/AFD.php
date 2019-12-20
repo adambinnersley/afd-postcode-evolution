@@ -178,7 +178,7 @@ class AFD{
                 return simplexml_load_string($response->getBody());
             }
         } catch (ConnectException $e) {
-            echo($e->getMessage());
+            new \Exception($e->getMessage());
         }
         return false;
     }
