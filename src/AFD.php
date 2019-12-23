@@ -173,7 +173,7 @@ class AFD{
     private function getData($url){
         $client = new Client(['timeout'  => 2.0]);
         try{
-            $response = $client->request('GET', $url, ['headers' => ['Accept' => 'application/xml']]);
+            $response = $client->get($url);
             if($response->getStatusCode() === 200){
                 return simplexml_load_string($response->getBody());
             }
