@@ -14,6 +14,8 @@ error_reporting(0);
 class AFD{
     protected static $AFD_HOST = 'http://localhost';
     protected static $AFD_PORT = 81;
+    
+    public $addressInfo = [];
 
     public $address1;
     public $address2;
@@ -70,7 +72,7 @@ class AFD{
         if($this->programActive()){
             $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslist.pce?postcode='.urlencode($postcode));
             if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
-                $addresses = array();
+                $addresses = [];
                 $count = count($xml->AddressListItem);
                 for($i = 0; $i < $count; $i++){
                     $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->AddressListItem[$i]->Address));
@@ -100,38 +102,17 @@ class AFD{
     /**
      * Returns the address details for a chosen address with the given key
      * @param string $key This should be the key from the address info previously retrieved
-     * @return array|boolean Returns and array if key and address info exist else returns false
+     * @return $this
      */
     public function setAddress($key){
         if($this->programActive()){
             $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
             if($xml->Result == 1){
-                $organisation = (string)$xml->Item->Organisation;
-                $property = (string)$xml->Item->Property;
-                $street = (string)$xml->Item->Street;
-                $locality = (string)$xml->Item->Locality;
-                $town = (string)$xml->Item->Town;
-                $county = (string)$xml->Item->PostalCounty;
-                $this->latitude = (string)$xml->Item->Latitude;
-                $this->longitude = (string)$xml->Item->Longitude;
-                
-                if($organisation){
-                    $this->address1 = $organisation.', '.$property;
-                    $this->address2 = $street;
-                    $this->address3 = $locality;
-                }
-                else{
-                    if(strlen($property) >= 3){$this->address1 = $property.', '.$street;}
-                    else{$this->address1 = $street;}
-                    $this->address2 = $locality;
-                    $this->address3 = '';
-                }
-                $this->town = $town;
-                $this->county = $county;
-                return true;
+                $this->addressInfo = array_filter(array_change_key_case((array)$xml->Item, CASE_LOWER));
+                $this->buildHouseAddress();
             }
         }
-        return false;
+        return $this;
     }
     
     /**
@@ -163,6 +144,38 @@ class AFD{
     public function programActive(){
         $statusxml = $this->getData($this->getHost().':'.$this->getPort().'/status.pce');
         return $statusxml->PCEStatus == 'OK' ? true : false;
+    }
+    
+    /**
+     * Sets the address information
+     */
+    protected function buildHouseAddress(){
+        if(!empty($this->addressInfo)){
+            $this->latitude = $this->addressInfo['latitude'];
+            $this->longitude = $this->addressInfo['longitude'];
+
+            if(!empty($this->addressInfo['organisation'])){
+                $this->address1 = $this->addressInfo['organisation'].', '.$this->addressInfo['property'];
+                $this->address2 = $this->addressInfo['street'];
+                $this->address3 = $this->addressInfo['locality'];
+            }
+            else{
+                $this->address1 = (strlen($this->addressInfo['property']) >= 3 ? $this->addressInfo['property'].', '.$this->addressInfo['street'] : $this->addressInfo['street']);
+                $this->address2 = $this->addressInfo['locality'];
+                $this->address3 = '';
+            }
+            $this->town = $this->addressInfo['town'];
+            $this->county = $this->addressInfo['county'];
+        }
+        return $this;
+    }
+    
+    /**
+     * Returns an array containing the address information if it has been set
+     * @return array This should contain any address information if it has been set
+     */
+    public function getAddressInfo(){
+        return $this->addressInfo;
     }
     
     /**
