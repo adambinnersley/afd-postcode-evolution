@@ -165,7 +165,7 @@ class AFD{
                 $this->address3 = '';
             }
             $this->town = $this->addressInfo['town'];
-            $this->county = $this->addressInfo['county'];
+            $this->county = $this->addressInfo['postalcounty'];
         }
         return $this;
     }
