@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AFDPostcodeEverywhere>
+<Result>1</Result><ErrorText/><Item value="1"><Name/>
+<Organisation/>
+<Property>Flat 1, Brayford Quay</Property>
+<Street>Newland</Street>
+<Locality/>
+<Town>Lincoln</Town>
+<PostalCounty/>
+<AbbreviatedPostalCounty/>
+<OptionalCounty>Lincolnshire</OptionalCounty>
+<AbbreviatedOptionalCounty>Lincs</AbbreviatedOptionalCounty>
+<TraditionalCounty>Lincolnshire</TraditionalCounty>
+<AdministrativeCounty>Lincolnshire</AdministrativeCounty>
+<Postcode>LN1 1YA</Postcode>
+<DPS>2B</DPS>
+<PostcodeFrom/>
+<PostcodeType>S</PostcodeType>
+<MailsortCode>33749</MailsortCode>
+<Phone>01522</Phone>
+<GridE>497196</GridE>
+<GridN>371254</GridN>
+<Miles/>
+<Km/>
+<Latitude>53.2295</Latitude>
+<Longitude>-0.5454</Longitude>
+<JustBuilt/>
+<UrbanRuralCode>C1</UrbanRuralCode>
+<UrbanRuralName>Urban City and Town</UrbanRuralName>
+<WardCode>E05010787</WardCode>
+<WardName>Carholme</WardName>
+<ConstituencyCode>E14000792</ConstituencyCode>
+<Constituency>Lincoln</Constituency>
+<EERCode>E15000004</EERCode>
+<EERName>East Midlands</EERName>
+<AuthorityCode>E07000138</AuthorityCode>
+<Authority>Lincoln</Authority>
+<LEACode>925</LEACode>
+<LEAName>Lincolnshire</LEAName>
+<TVRegion>Yorkshire</TVRegion>
+<Occupancy>5</Occupancy>
+<OccupancyDescription>Mostly Residential</OccupancyDescription>
+<AddressType>3</AddressType>
+<AddressTypeDescription>Numbered and Named, Likelihood of Multiple Occupancy</AddressTypeDescription>
+<UDPRN>51255577</UDPRN>
+<NHSCode>Q33</NHSCode>
+<NHSName>East Midlands</NHSName>
+<NHSRegionCode>Y22</NHSRegionCode>
+<NHSRegionName>Midlands and Eastern</NHSRegionName>
+<PCTCode>E38000100</PCTCode>
+<PCTName>Lincolnshire West</PCTName>
+<SubCountryName>England</SubCountryName>
+<DevolvedConstituencyCode/>
+<DevolvedConstituencyName/>
+<CensationCode>BY12</CensationCode>
+<CensationLabel>Home and Garden</CensationLabel>
+<Affluence>Prosperous</Affluence>
+<Lifestage>Empty nests and seniors</Lifestage>
+<AdditionalCensusInfo>Established focus on buying home, DIY, home improvements and the garden</AdditionalCensusInfo>
+<SOALower>E01026143</SOALower>
+<SOAMiddle>E02005446</SOAMiddle>
+<Residency/>
+<HouseholdComposition/>
+<Business/>
+<Size/>
+<SICCode/>
+<LocationType/>
+<BranchCount/>
+<GroupID/>
+<ModelledTurnover/>
+<NationalSize/>
+<OnEditedRoll/>
+<Gender/>
+<Forename/>
+<MiddleInitial/>
+<Surname/>
+<DateOfBirth/>
+<CouncilTaxBand/>
+<Product>AFD Postcode Plus</Product>
+<Key>LN1 1YA1005~20191219</Key>
+<List>LN1 1YA     Flat 1, Brayford Quay, Newland, LINCOLN</List>
+<Country>United Kingdom</Country>
+<CountryISO>GBR</CountryISO>
+</Item>
+</AFDPostcodeEverywhere>
