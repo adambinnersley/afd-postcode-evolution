@@ -6,7 +6,6 @@
 namespace AFD;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ConnectException;
 
 error_reporting(0);
