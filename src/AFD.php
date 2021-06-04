@@ -69,13 +69,13 @@ class AFD{
      */
     public function findAddresses($postcode){
         if($this->programActive()){
-            $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslist.pce?postcode='.urlencode($postcode));
-            if($xml->AddressListItem[0]->Address != 'Error: Postcode Not Found'){
+            $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Lookup&Fields=List&Lookup='.urlencode($postcode));
+            if($xml->Result == 1){
                 $addresses = [];
-                $count = count($xml->AddressListItem);
+                $count = count($xml->Item);
                 for($i = 0; $i < $count; $i++){
-                    $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->AddressListItem[$i]->Address));
-                    $addresses[$i]['key'] = (string)$xml->AddressListItem[$i]->PostKey;
+                    $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->Item[$i]->List));
+                    $addresses[$i]['key'] = (string)$xml->Item[$i]->Key;
                 }
                 return $addresses;
             }
