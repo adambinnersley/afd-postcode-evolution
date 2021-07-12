@@ -68,17 +68,15 @@ class AFD{
      * @return array|boolean Returns a list of the addresses or returns false if program is not active
      */
     public function findAddresses($postcode){
-        if($this->programActive()){
-            $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Lookup&Fields=List&Lookup='.urlencode($postcode));
-            if($xml->Result == 1){
-                $addresses = [];
-                $count = count($xml->Item);
-                for($i = 0; $i < $count; $i++){
-                    $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->Item[$i]->List));
-                    $addresses[$i]['key'] = (string)$xml->Item[$i]->Key;
-                }
-                return $addresses;
+        $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Lookup&Fields=List&Lookup='.urlencode($postcode));
+        if($xml->Result == 1){
+            $addresses = [];
+            $count = count($xml->Item);
+            for($i = 0; $i < $count; $i++){
+                $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->Item[$i]->List));
+                $addresses[$i]['key'] = (string)$xml->Item[$i]->Key;
             }
+            return $addresses;
         }
         return false;
     }
@@ -89,11 +87,9 @@ class AFD{
      * @return array|boolean Returns array if information exist else returns false
      */
     public function postcodeDetails($postcode){
-        if($this->programActive()){
-            $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
-            if($xml->Address->Postcode != 'Error: Postcode Not Found'){
-                return array_filter(get_object_vars($xml->Address));
-            }
+        $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
+        if($xml->Address->Postcode != 'Error: Postcode Not Found'){
+            return array_filter(get_object_vars($xml->Address));
         }
         return false;
     }
@@ -104,12 +100,10 @@ class AFD{
      * @return $this
      */
     public function setAddress($key){
-        if($this->programActive()){
-            $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
-            if($xml->Result == 1){
-                $this->addressInfo = array_filter(array_change_key_case((array)$xml->Item, CASE_LOWER));
-                $this->buildHouseAddress();
-            }
+        $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
+        if($xml->Result == 1){
+            $this->addressInfo = array_filter(array_change_key_case((array)$xml->Item, CASE_LOWER));
+            $this->buildHouseAddress();
         }
         return $this;
     }
