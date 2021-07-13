@@ -176,7 +176,7 @@ class AFD{
      * @param string $url This should be the URL with the given information
      * @return array Returns the results from the URL given in an array format  
      */
-    private function getData($url){
+    protected function getData($url){
         $client = new Client(['timeout'  => 2.0]);
         try{
             $response = $client->get($url);
