@@ -1,21 +1,22 @@
 <?php
+
 /**
  * The AFD class is made to be used with the AFD Postcode Evolution Server program to get the users postcode information
  * @author Adam Binnersley <abinnersley@gmail.com>
  */
+
 namespace AFD;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 
-error_reporting(0);
+class AFD
+{
 
-class AFD{
+
     protected static $AFD_HOST = 'http://localhost';
     protected static $AFD_PORT = 81;
-    
     public $addressInfo = [];
-
     public $address1;
     public $address2;
     public $address3;
@@ -29,7 +30,8 @@ class AFD{
      * @param string $host This should be a valid URL
      * @return void
      */
-    public function setHost($host){
+    public function setHost($host)
+    {
         self::$AFD_HOST = $host;
         return $this;
     }
@@ -38,7 +40,8 @@ class AFD{
      * Gets he host where the AFD Postcode Evolution is installed
      * @return string
      */
-    public function getHost(){
+    public function getHost()
+    {
         return self::$AFD_HOST;
     }
     
@@ -47,8 +50,9 @@ class AFD{
      * @param int $port This should be the Port number that the Postcode evolution is installed on
      * @return void
      */
-    public function setPort($port){
-        if(is_int($port) && $port >= 1){
+    public function setPort($port)
+    {
+        if (is_int($port) && $port >= 1) {
             self::$AFD_PORT = $port;
         }
         return $this;
@@ -58,7 +62,8 @@ class AFD{
      * Gets the port number to look for the AFD Postcode data
      * @return int
      */
-    public function getPort(){
+    public function getPort()
+    {
         return self::$AFD_PORT;
     }
     
@@ -67,12 +72,13 @@ class AFD{
      * @param string $postcode Should be the postcode you wish to find the addresses for
      * @return array|boolean Returns a list of the addresses or returns false if program is not active
      */
-    public function findAddresses($postcode){
-        $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Lookup&Fields=List&Lookup='.urlencode($postcode));
-        if($xml->Result == 1){
+    public function findAddresses($postcode)
+    {
+        $xml = $this->getData($this->getHost() . ':' . $this->getPort() . '/afddata.pce?Data=Address&Task=Lookup&Fields=List&Lookup=' . urlencode($postcode));
+        if ($xml->Result == 1) {
             $addresses = [];
             $count = count($xml->Item);
-            for($i = 0; $i < $count; $i++){
+            for ($i = 0; $i < $count; $i++) {
                 $addresses[$i]['address'] = (string)trim(str_replace($postcode, '', $xml->Item[$i]->List));
                 $addresses[$i]['key'] = (string)$xml->Item[$i]->Key;
             }
@@ -86,9 +92,10 @@ class AFD{
      * @param string $postcode Should be the postcode you wish to find the information for
      * @return array|boolean Returns array if information exist else returns false
      */
-    public function postcodeDetails($postcode){
-        $xml = $this->getData($this->getHost().':'.$this->getPort().'/addresslookup.pce?postcode='.urlencode($postcode));
-        if($xml->Address->Postcode != 'Error: Postcode Not Found'){
+    public function postcodeDetails($postcode)
+    {
+        $xml = $this->getData($this->getHost() . ':' . $this->getPort() . '/addresslookup.pce?postcode=' . urlencode($postcode));
+        if ($xml->Address->Postcode != 'Error: Postcode Not Found') {
             return array_filter(get_object_vars($xml->Address));
         }
         return false;
@@ -99,9 +106,10 @@ class AFD{
      * @param string $key This should be the key from the address info previously retrieved
      * @return $this
      */
-    public function setAddress($key){
-        $xml = $this->getData($this->getHost().':'.$this->getPort().'/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key='.urlencode($key));
-        if($xml->Result == 1){
+    public function setAddress($key)
+    {
+        $xml = $this->getData($this->getHost() . ':' . $this->getPort() . '/afddata.pce?Data=Address&Task=Retrieve&Fields=Standard&Key=' . urlencode($key));
+        if ($xml->Result == 1) {
             $this->addressInfo = array_filter(array_change_key_case((array)$xml->Item, CASE_LOWER));
             $this->buildHouseAddress();
         }
@@ -110,10 +118,11 @@ class AFD{
     
     /**
      * Returns the latitude of the last address location that was searched for
-     * @return string|boolean 
+     * @return string|boolean
      */
-    public function getLatitude(){
-        if(!empty($this->latitude)){
+    public function getLatitude()
+    {
+        if (!empty($this->latitude)) {
             return $this->latitude;
         }
         return false;
@@ -121,10 +130,11 @@ class AFD{
     
     /**
      * Returns the longitude of the last address location that was searched for
-     * @return string|boolean 
+     * @return string|boolean
      */
-    public function getLongitude(){
-        if(!empty($this->longitude)){
+    public function getLongitude()
+    {
+        if (!empty($this->longitude)) {
             return $this->longitude;
         }
         return false;
@@ -134,26 +144,26 @@ class AFD{
      * Checks to see if the program is active for the given location
      * @return boolean Returns true if program active else returns false
      */
-    public function programActive(){
-        $statusxml = $this->getData($this->getHost().':'.$this->getPort().'/status.pce');
+    public function programActive()
+    {
+        $statusxml = $this->getData($this->getHost() . ':' . $this->getPort() . '/status.pce');
         return $statusxml->PCEStatus == 'OK' ? true : false;
     }
     
     /**
      * Sets the address information
      */
-    protected function buildHouseAddress(){
-        if(!empty($this->addressInfo)){
+    protected function buildHouseAddress()
+    {
+        if (!empty($this->addressInfo)) {
             $this->latitude = $this->addressInfo['latitude'];
             $this->longitude = $this->addressInfo['longitude'];
-
-            if(!empty($this->addressInfo['organisation'])){
-                $this->address1 = $this->addressInfo['organisation'].', '.$this->addressInfo['property'];
+            if (!empty($this->addressInfo['organisation'])) {
+                $this->address1 = $this->addressInfo['organisation'] . ', ' . $this->addressInfo['property'];
                 $this->address2 = $this->addressInfo['street'];
                 $this->address3 = $this->addressInfo['locality'];
-            }
-            else{
-                $this->address1 = (strlen($this->addressInfo['property']) >= 3 ? $this->addressInfo['property'].', '.$this->addressInfo['street'] : $this->addressInfo['street']);
+            } else {
+                $this->address1 = (strlen($this->addressInfo['property']) >= 3 ? $this->addressInfo['property'] . ', ' . $this->addressInfo['street'] : $this->addressInfo['street']);
                 $this->address2 = $this->addressInfo['locality'];
                 $this->address3 = '';
             }
@@ -167,20 +177,22 @@ class AFD{
      * Returns an array containing the address information if it has been set
      * @return array This should contain any address information if it has been set
      */
-    public function getAddressInfo(){
+    public function getAddressInfo()
+    {
         return $this->addressInfo;
     }
     
     /**
      * Gets the information from the URL given in XML format and turns it to an array
      * @param string $url This should be the URL with the given information
-     * @return array Returns the results from the URL given in an array format  
+     * @return array Returns the results from the URL given in an array format
      */
-    protected function getData($url){
+    protected function getData($url)
+    {
         $client = new Client(['timeout'  => 2.0]);
-        try{
+        try {
             $response = $client->get($url);
-            if($response->getStatusCode() === 200){
+            if ($response->getStatusCode() === 200) {
                 return simplexml_load_string($response->getBody());
             }
         } catch (ConnectException $e) {
