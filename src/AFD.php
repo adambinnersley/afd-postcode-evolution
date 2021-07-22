@@ -10,6 +10,8 @@ namespace AFD;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 
+error_reporting(0);
+
 class AFD
 {
 
