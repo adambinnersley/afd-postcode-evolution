@@ -180,7 +180,7 @@ class AFDTest extends TestCase
     
     protected function getData($url)
     {
-        $data = file_get_contents(dirname(__FILE__).$url);
+        $data = file_get_contents(str_replace(['\\', '/'], DIRECTORY_SEPARATOR, dirname(__FILE__).$url));
         return simplexml_load_string($data);
     }
 }
