@@ -66,7 +66,7 @@ class AFDTest extends TestCase
      */
     public function testProgramActive()
     {
-        $response = $this->getData('tests\Responces\getStatus.xml');
+        $response = $this->getData('\Responces\getStatus.xml');
         
         $mock = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mock->method('getData')->willReturn($response);
@@ -87,7 +87,7 @@ class AFDTest extends TestCase
      */
     public function testFindAddress()
     {
-        $response = $this->getData('tests\Responces\findAddresses.xml');
+        $response = $this->getData('\Responces\findAddresses.xml');
         
         $mock = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mock->method('getData')->willReturn($response);
@@ -97,7 +97,7 @@ class AFDTest extends TestCase
         $this->assertArrayHasKey('address', $address[0]);
         $this->assertArrayHasKey('key', $address[5]);
         
-        $responseNF = $this->getData('tests\Responces\postcodeNotFound.xml');
+        $responseNF = $this->getData('\Responces\postcodeNotFound.xml');
         
         $mockNF = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mockNF->method('getData')->willReturn($responseNF);
@@ -114,7 +114,7 @@ class AFDTest extends TestCase
      */
     public function testGetPostcodeDetails()
     {
-        $response = $this->getData('tests\Responces\getAddressDetails.xml');
+        $response = $this->getData('\Responces\getAddressDetails.xml');
         
         $mock = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mock->method('getData')->willReturn($response);
@@ -134,7 +134,7 @@ class AFDTest extends TestCase
      */
     public function testSetAddress()
     {
-        $response = $this->getData('tests\Responces\setAddress.xml');
+        $response = $this->getData('\Responces\setAddress.xml');
         
         $mock = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mock->method('getData')->willReturn($response);
@@ -152,7 +152,7 @@ class AFDTest extends TestCase
     {
         $this->assertFalse($this->afd->getLongitude());
         
-        $response = $this->getData('tests\Responces\setAddress.xml');
+        $response = $this->getData('\Responces\setAddress.xml');
         
         $mock = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mock->method('getData')->willReturn($response);
@@ -169,7 +169,7 @@ class AFDTest extends TestCase
     public function testGetLatitude()
     {
         $this->assertFalse($this->afd->getLatitude());
-        $response = $this->getData('tests\Responces\setAddress.xml');
+        $response = $this->getData('\Responces\setAddress.xml');
         
         $mock = $this->getMockBuilder(AFD::class)->setMethods(['getData'])->getMock();
         $mock->method('getData')->willReturn($response);
@@ -180,7 +180,7 @@ class AFDTest extends TestCase
     
     protected function getData($url)
     {
-        $data = file_get_contents($url);
+        $data = file_get_contents(dirname(__FILE__).$url);
         return simplexml_load_string($data);
     }
 }
